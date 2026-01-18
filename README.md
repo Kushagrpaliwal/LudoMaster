@@ -1,6 +1,6 @@
 # LudoMaster 🎲
 
-A premium real-time multiplayer Ludo game built with Next.js, Socket.io, and MongoDB. Experience the classic board game with stunning visuals, smooth animations, and intelligent gameplay.
+A premium real-time multiplayer Ludo game built with Next.js and MongoDB. Experience the classic board game with stunning visuals, smooth animations, and intelligent gameplay.
 
 ## ✨ Features
 
@@ -8,7 +8,7 @@ A premium real-time multiplayer Ludo game built with Next.js, Socket.io, and Mon
   - **2 Player Mode**: Classic 1v1 head-to-head battles
   - **4 Player Mode**: Epic 4-player free-for-all showdowns
 - **🤖 Smart AI Opponents**: Intelligent bots that adapt to your playing style for offline practice
-- **⚡ Real-time Multiplayer**: Instant matchmaking and seamless live gameplay using Socket.io
+- **⚡ Real-time Multiplayer**: Instant matchmaking and seamless live gameplay using 
 - **🎨 Premium UI/UX**:
   - Glassmorphism design aesthetic
   - 3D-style dice rolls and token animations
@@ -21,7 +21,7 @@ A premium real-time multiplayer Ludo game built with Next.js, Socket.io, and Mon
 
 - **Frontend**: Next.js 15, React 19, Tailwind CSS v4
 - **Animations**: Framer Motion, React Icons
-- **Real-time**: Socket.io (Client & Server)
+- **Real-time**:  (Client & Server)
 - **Backend**: Express, Node.js
 - **Database**: MongoDB (Mongoose)
 
@@ -44,13 +44,13 @@ A premium real-time multiplayer Ludo game built with Next.js, Socket.io, and Mon
    # MongoDB Connection
    MONGODB_URI=mongodb://localhost:27017/ludomaster
 
-   # Socket.io Server
+   #  Server
    NEXT_PUBLIC_SOCKET_URL=http://localhost:3001
    PORT=3001
    ```
 
 4. **Start the Development Server**
-   Run the full game stack (Next.js app + Socket.io server):
+   Run the full game stack (Next.js app +  server):
    ```bash
    npm run start-game
    ```
