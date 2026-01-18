@@ -1,72 +1,76 @@
-# Dragon Tiger Game
+# LudoMaster 🎲
 
-A real-time multiplayer Dragon Tiger card game built with Next.js and Socket.io.
+A premium real-time multiplayer Ludo game built with Next.js, Socket.io, and MongoDB. Experience the classic board game with stunning visuals, smooth animations, and intelligent gameplay.
 
-## Features
+## ✨ Features
 
-- Real-time game updates using Socket.io
-- Beautiful animations with Framer Motion
-- Responsive design for both desktop and mobile
-- Bot players that simulate real betting activity
-- Game history tracking
-- MongoDB integration for game sessions
+- **🎮 Multiple Game Modes**
+  - **2 Player Mode**: Classic 1v1 head-to-head battles
+  - **4 Player Mode**: Epic 4-player free-for-all showdowns
+- **🤖 Smart AI Opponents**: Intelligent bots that adapt to your playing style for offline practice
+- **⚡ Real-time Multiplayer**: Instant matchmaking and seamless live gameplay using Socket.io
+- **🎨 Premium UI/UX**:
+  - Glassmorphism design aesthetic
+  - 3D-style dice rolls and token animations
+  - Smooth transitions with Framer Motion
+- **📱 Fully Responsive**: Optimized experience for both mobile and desktop devices
+- **🏆 Live Stats**: Real-time player counts and dynamic leaderboards
+- **💸 100% Free**: No pay-to-win mechanics, just pure skill and strategy
 
-## Setup
+## 🛠️ Technologies Used
 
-1. Install dependencies:
+- **Frontend**: Next.js 15, React 19, Tailwind CSS v4
+- **Animations**: Framer Motion, React Icons
+- **Real-time**: Socket.io (Client & Server)
+- **Backend**: Express, Node.js
+- **Database**: MongoDB (Mongoose)
+
+## 🚀 Setup & Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd LudoBhoot
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Create a `.env.local` file in the root directory with the following content:
-   ```
+3. **Configure Environment Variables**
+   Create a `.env.local` file in the root directory:
+   ```env
    # MongoDB Connection
-   MONGODB_URI=mongodb://localhost:27017/dragon-tiger
+   MONGODB_URI=mongodb://localhost:27017/ludomaster
 
    # Socket.io Server
    NEXT_PUBLIC_SOCKET_URL=http://localhost:3001
-
-   # Server Port
    PORT=3001
    ```
 
-3. Make sure MongoDB is running locally or update the MONGODB_URI to point to your MongoDB instance.
+4. **Start the Development Server**
+   Run the full game stack (Next.js app + Socket.io server):
+   ```bash
+   npm run start-game
+   ```
 
-## Running the Game
+   This will start:
+   - Next.js frontend on `http://localhost:3000`
+   - Game server on `http://localhost:3001`
 
-To run both the Next.js app and the Socket.io server together:
+## 🕹️ How to Play
 
-```bash
-npm run start-game
-```
+1. **Select Mode**: Choose between 2-Player or 4-Player mode.
+2. **Roll Dice**: Click the dice to roll. You need a 6 to open a token.
+3. **Move Tokens**: Strategize your moves to race all your tokens to the center 'Home' triangle.
+4. **Capture**: Land on opponents' tokens to send them back to start.
+5. **Win**: The first player to get all 4 tokens Home wins the game!
 
-This will start:
-- Next.js app on http://localhost:3000
-- Socket.io server on http://localhost:3001
+## 🤝 Contributing
 
-## Game Rules
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Dragon Tiger is a simple card game:
-- Two cards are dealt: one to Dragon and one to Tiger
-- The higher card wins (Ace is lowest, King is highest)
-- If cards are equal, it's a Tie
-- Payouts:
-  - Dragon: 1:1
-  - Tiger: 1:1
-  - Tie: 8:1
+## 📄 License
 
-## Development
-
-- The game loop is managed by `app/cron/dragonGameLoop.js`
-- Socket.io server is in `app/server/dragonServer.js`
-- Frontend game UI is in `app/games/dragontiger/page.js`
-- Game state is synchronized between server and clients via Socket.io
-
-## Technologies Used
-
-- Next.js
-- React
-- Socket.io
-- Framer Motion
-- MongoDB/Mongoose
-- Tailwind CSS
+This project is licensed under the MIT License.
