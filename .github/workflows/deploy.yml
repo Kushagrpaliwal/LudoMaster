@@ -10,24 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Ansible
-        run: |
-          sudo apt update
-          sudo apt install ansible -y
-
-      - name: Setup SSH Key
+      - name: Setup SSH key
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
           chmod 600 key.pem
 
-      - name: Create Inventory
+      - name: Create app directory on EC2
         run: |
-          echo "[app]" > inventory
-          echo "15.206.221.137 ansible_user=ubuntu ansible_ssh_private_key_file=key.pem" >> inventory
+          ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@15.206.221.137 "mkdir -p /home/ubuntu/app"
 
-      - name: Run Deployment
+      - name: Rsync project files to EC2
         run: |
-          ansible-playbook -i inventory ansible/deploy.yml
+          rsync -avz \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            -e "ssh -i key.pem -o StrictHostKeyChecking=no" \
+            ./ ubuntu@15.206.221.137:/home/ubuntu/app
+
+      - name: Install dependencies and restart app
+        run: |
+          ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@15.206.221.137 << 'EOF'
+          cd /home/ubuntu/app
+          npm install
+          pm2 restart all || pm2 start index.js
+          EOF
