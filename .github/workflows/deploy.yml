@@ -20,7 +20,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/LudoMaster || git clone https://github.com/Kushagrpaliwal/LudoMaster.git ~/LudoMaster && cd ~/LudoMaster
-            git pull origin main
+            cd ~/LudoMaster && git pull origin main
             npm install
-            pm2 restart all || pm2 start npm --name "ludomaster" -- run dev
+            pm2 delete all || true
+            pm2 start npm --name "ludomaster" -- run dev
