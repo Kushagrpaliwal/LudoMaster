@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# ssh keys
+my-key
+my-key.pub
+*.key
+id_rsa
+id_rsa.pub
