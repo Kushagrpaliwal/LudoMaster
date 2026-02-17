@@ -401,7 +401,7 @@ const LandingPage = () => {
               <Link href="/about" className="hover:text-white transition-colors">About</Link>
             </div>
             <p className="text-[var(--ludo-text-muted)] text-sm">
-              © 2026 LudoMaster. All rights reserved.
+              © 2026 LudoMasterGanjapatel. All rights reserved.
             </p>
           </div>
         </div>
