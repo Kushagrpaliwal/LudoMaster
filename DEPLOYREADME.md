@@ -28,6 +28,11 @@
 
 
     
+git clone https://github.com/Kushagrpaliwal/LudoMaster.git
+cd app
+npm install
+npm run build
+pm2 start npm --name "app" -- start
 
 
 
