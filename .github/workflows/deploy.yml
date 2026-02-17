@@ -18,22 +18,12 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
           chmod 600 key.pem
 
-      - name: Create app directory on EC2
+      - name: Deploy
         run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@15.206.221.137 "mkdir -p /home/ubuntu/app"
-
-      - name: Rsync project files to EC2
-        run: |
-          rsync -avz \
-            --exclude '.git' \
-            --exclude 'node_modules' \
-            -e "ssh -i key.pem -o StrictHostKeyChecking=no" \
-            ./ ubuntu@15.206.221.137:/home/ubuntu/app
-
-      - name: Install dependencies and restart app
-        run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@15.206.221.137 << 'EOF'
-          cd /home/ubuntu/app
-          npm install
-          pm2 restart all || pm2 start index.js
+          ssh -o StrictHostKeyChecking=no -i key.pem \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd LudoMaster
+            git pull
+            npm install
+            pm2 restart all
           EOF
