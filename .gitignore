@@ -47,6 +47,12 @@ terraform/*.tfstate
 terraform/*.tfstate.backup
 terraform/.terraform.lock.hcl
 
+# Terraform ECS
+terraform-ecs/.terraform/
+terraform-ecs/*.tfstate
+terraform-ecs/*.tfstate.backup
+terraform-ecs/.terraform.lock.hcl
+
 # ssh keys
 my-key
 my-key.pub
