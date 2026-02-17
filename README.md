@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # LudoMaster 🎲
 
 A premium real-time multiplayer Ludo game built with Next.js and MongoDB. Experience the classic board game with stunning visuals, smooth animations, and intelligent gameplay.
@@ -74,3 +75,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📄 License
 
 This project is licensed under the MIT License.
+=======
+# LudoMaster
+LudoMaster
+>>>>>>> bf279f7 (Initial commit)

@@ -4,7 +4,7 @@
   tasks:
     - name: Pull latest code
       git:
-        repo: https://github.com/Kushagrpaliwal/LudoMaster
+        repo: https://github.com/Kushagrpaliwal/LudoMaster.git
         dest: /home/ubuntu/app
         version: main
         force: yes
@@ -14,5 +14,5 @@
       args:
         chdir: /home/ubuntu/app
 
-    - name: Restart app
+    - name: Restart application
       command: pm2 restart all
