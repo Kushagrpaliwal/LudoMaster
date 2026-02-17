@@ -26,6 +26,5 @@ jobs:
             cd ~/LudoMaster || git clone https://github.com/Kushagrpaliwal/LudoMaster.git ~/LudoMaster && cd ~/LudoMaster
             git pull origin main
             npm install
-            npm run build
-            pm2 restart all || pm2 start npm --name "ludomaster" -- start
+            pm2 restart all || pm2 start npm --name "ludomaster" -- run dev
           EOF
