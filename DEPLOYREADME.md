@@ -15,7 +15,20 @@
     aws ec2 import-key-pair --key-name my-key --public-key-material fileb://my-key.pub
 
 3. Installing and setting up Teraform and Ansible 
+ 
+    creating folder inside the project 
+
+    mkdir terraform
+    mkdir ansible
+    mkdir -p .github/workflows
+
+    Need to create 2 files in Terraform main.tf and outputs.tf
 
     
+
+
+    
+
+
 
 

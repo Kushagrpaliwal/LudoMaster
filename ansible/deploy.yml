@@ -1,0 +1,18 @@
+- hosts: app
+  become: yes
+
+  tasks:
+    - name: Pull latest code
+      git:
+        repo: https://github.com/Kushagrpaliwal/LudoMaster
+        dest: /home/ubuntu/app
+        version: main
+        force: yes
+
+    - name: Install dependencies
+      command: npm install
+      args:
+        chdir: /home/ubuntu/app
+
+    - name: Restart app
+      command: pm2 restart all

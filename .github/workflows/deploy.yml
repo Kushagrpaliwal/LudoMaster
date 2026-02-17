@@ -1,0 +1,29 @@
+name: Deploy App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Ansible
+        run: sudo apt update && sudo apt install ansible -y
+
+      - name: Create SSH Key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      - name: Create Inventory
+        run: |
+          echo "[app]" > inventory
+          echo "15.206.221.137 ansible_user=ubuntu ansible_ssh_private_key_file=key.pem" >> inventory
+
+      - name: Run Ansible Deploy
+        run: ansible-playbook -i inventory ansible/deploy.yml

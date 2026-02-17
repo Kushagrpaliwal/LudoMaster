@@ -41,6 +41,12 @@ yarn-error.log*
 next-env.d.ts
 
 
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+
 # ssh keys
 my-key
 my-key.pub
