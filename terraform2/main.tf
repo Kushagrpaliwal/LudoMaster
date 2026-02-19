@@ -58,6 +58,7 @@ resource "aws_ecs_cluster" "cluster" {
 
 resource "aws_ecr_repository" "repo" {
   name = "ludo-repo"
+force_delete = true 
 }
 
 resource "aws_iam_role" "ecs_instance_role" {

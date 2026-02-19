@@ -31,14 +31,91 @@ module "eks" {
 
   eks_managed_node_groups = {
     default = {
-      instance_types = ["t3.micro"]
+      instance_types = ["t3.medium"]
       min_size       = 1
-      max_size       = 1
-      desired_size   = 1
+      max_size       = 2
+      desired_size   = 2
     }
   }
 }
 
-data "aws_ecr_repository" "repo" {
-  name = "ludo-repo"
+
+
+# ---------- AUTH FOR K8S/HELM PROVIDERS ----------
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_name
+}
+
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+}
+
+provider "helm" {
+  kubernetes = {
+    host                   = module.eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+    token                  = data.aws_eks_cluster_auth.cluster.token
+  }
+}
+
+# ---------- MONITORING STACK ----------
+
+resource "kubernetes_namespace_v1" "monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+}
+
+# Prometheus + Grafana + Alertmanager
+resource "helm_release" "kube_prometheus" {
+  name       = "kube-prometheus"
+  namespace  = kubernetes_namespace_v1.monitoring.metadata[0].name
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
+
+  values = [
+    file("${path.module}/values/prometheus-values.yaml")
+  ]
+
+  timeout = 600
+}
+
+# Loki stack for log aggregation (includes Promtail)
+resource "helm_release" "loki" {
+  name       = "loki"
+  namespace  = kubernetes_namespace_v1.monitoring.metadata[0].name
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "loki-stack"
+
+  set = [
+    {
+      name  = "promtail.enabled"
+      value = "true"
+    },
+    {
+      name  = "loki.persistence.enabled"
+      value = "false"
+    }
+  ]
+
+  timeout = 600
+}
+
+# OpenTelemetry Collector
+resource "helm_release" "otel" {
+  name       = "otel"
+  namespace  = kubernetes_namespace_v1.monitoring.metadata[0].name
+  repository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+  chart      = "opentelemetry-collector"
+
+  values = [
+    file("${path.module}/values/otel-values.yaml")
+  ]
+
+  timeout = 600
+
+  depends_on = [helm_release.kube_prometheus, helm_release.loki]
 }
