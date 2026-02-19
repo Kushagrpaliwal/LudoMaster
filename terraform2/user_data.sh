@@ -1,6 +1,13 @@
 #!/bin/bash
 echo ECS_CLUSTER=ludo-cluster >> /etc/ecs/ecs.config
 
+# Create swap file
+dd if=/dev/zero of=/swapfile bs=1M count=1024
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo '/swapfile swap swap defaults 0 0' >> /etc/fstab
+
 # Create monitoring directory
 mkdir -p /etc/monitoring
 

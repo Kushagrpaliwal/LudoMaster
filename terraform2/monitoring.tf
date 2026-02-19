@@ -31,7 +31,8 @@ resource "aws_ecs_task_definition" "monitoring_task" {
       name      = "prometheus"
       image     = "prom/prometheus:latest"
       cpu       = 128
-      memoryReservation = 128
+      memoryReservation = 64
+      user      = "0"
       essential = true
       portMappings = [
         {
@@ -57,7 +58,8 @@ resource "aws_ecs_task_definition" "monitoring_task" {
       name      = "loki"
       image     = "grafana/loki:latest"
       cpu       = 128
-      memoryReservation = 128
+      memoryReservation = 64
+      user      = "0"
       essential = true
       portMappings = [
         {
@@ -80,7 +82,8 @@ resource "aws_ecs_task_definition" "monitoring_task" {
       name      = "grafana"
       image     = "grafana/grafana:latest"
       cpu       = 128
-      memoryReservation = 128
+      memoryReservation = 64
+      user      = "0"
       essential = true
       portMappings = [
         {
@@ -111,7 +114,8 @@ resource "aws_ecs_task_definition" "monitoring_task" {
       name      = "otel-collector"
       image     = "otel/opentelemetry-collector:latest"
       cpu       = 64
-      memoryReservation = 64
+      memoryReservation = 32
+      user      = "0"
       essential = true
       portMappings = [
         {
@@ -143,7 +147,8 @@ resource "aws_ecs_task_definition" "monitoring_task" {
         name = "promtail"
         image = "grafana/promtail:latest"
         cpu = 64
-        memoryReservation = 64
+        memoryReservation = 32
+        user      = "0"
         essential = true
         mountPoints = [
             {

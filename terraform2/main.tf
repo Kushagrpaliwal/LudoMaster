@@ -166,7 +166,7 @@ resource "aws_ecs_task_definition" "task" {
       name      = "ludo-container"
       image     = "${aws_ecr_repository.repo.repository_url}:latest"
       cpu       = 256
-      memory    = 512
+      memoryReservation = 256
       essential = true
       portMappings = [
         {
