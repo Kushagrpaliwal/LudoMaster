@@ -53,6 +53,15 @@ terraform-ecs/*.tfstate
 terraform-ecs/*.tfstate.backup
 terraform-ecs/.terraform.lock.hcl
 
+# Terraform2
+terraform2/.terraform/
+terraform2/*.tfstate
+terraform2/*.tfstate.backup
+terraform2/.terraform.lock.hcl
+
+# Catch-all for any .terraform directories
+**/.terraform/
+
 # ssh keys
 my-key
 my-key.pub
