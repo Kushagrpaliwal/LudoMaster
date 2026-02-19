@@ -44,6 +44,34 @@ resource "aws_security_group" "ecs_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 3001
+    to_port     = 3003
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Grafana (3001), Prometheus (3002 - mapped), Loki (3003 - mapped)
+  }
+
+  ingress {
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Prometheus default
+  }
+
+  ingress {
+    from_port   = 3100
+    to_port     = 3100
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Loki default
+  }
+
+  ingress {
+    from_port   = 8888
+    to_port     = 8889
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Otel Collector
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -58,7 +86,7 @@ resource "aws_ecs_cluster" "cluster" {
 
 resource "aws_ecr_repository" "repo" {
   name = "ludo-repo"
-force_delete = true 
+ force_delete = true 
 }
 
 resource "aws_iam_role" "ecs_instance_role" {
@@ -110,10 +138,13 @@ resource "aws_instance" "ecs_instance" {
 
   iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
-  user_data = <<EOF
-#!/bin/bash
-echo ECS_CLUSTER=ludo-cluster >> /etc/ecs/ecs.config
-EOF
+  user_data_base64 = base64encode(templatefile("${path.module}/user_data.sh", {
+    prometheus_config = file("${path.module}/monitoring/prometheus.yaml")
+    loki_config       = file("${path.module}/monitoring/loki-config.yaml")
+    otel_config       = file("${path.module}/monitoring/otel-collector-config.yaml")
+    grafana_datasources = file("${path.module}/monitoring/grafana-datasources.yaml")
+    promtail_config   = file("${path.module}/monitoring/promtail-config.yaml")
+  }))
 }
 
 resource "aws_eip" "ecs_eip" {
