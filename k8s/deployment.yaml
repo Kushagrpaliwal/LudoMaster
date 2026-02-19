@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ludomaster
+  labels:
+    app: ludomaster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ludomaster
+  template:
+    metadata:
+      labels:
+        app: ludomaster
+    spec:
+      containers:
+        - name: ludomaster
+          image: 037776138482.dkr.ecr.ap-south-1.amazonaws.com/ludo-repo:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: ludomaster-secrets
+                  key: MONGO_URI
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: ludomaster-secrets
+                  key: MONGO_URI
+          resources:
+            requests:
+              cpu: "128m"
+              memory: "256Mi"
+            limits:
+              cpu: "256m"
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ludomaster-service
+  labels:
+    app: ludomaster
+spec:
+  type: LoadBalancer
+  selector:
+    app: ludomaster
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

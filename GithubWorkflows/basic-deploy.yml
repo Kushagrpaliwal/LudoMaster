@@ -1,0 +1,47 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "🚀 Starting deployment..."
+
+            # Go to project directory
+            cd ~/LudoMaster
+
+            echo "📥 Pulling latest code..."
+            git fetch origin
+            git reset --hard origin/main
+
+            echo "📦 Installing dependencies..."
+            npm install --production
+
+            echo "♻️ Restarting PM2..."
+
+            # Stop old process if exists
+            pm2 delete ludomaster || true
+
+            # Start fresh
+            pm2 start npm --name "ludomaster" -- run dev
+
+            # Save PM2 process list
+            pm2 save
+
+            echo "✅ Deployment completed successfully!"
